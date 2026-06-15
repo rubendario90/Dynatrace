@@ -1,14 +1,7 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { TitleBar as StratoTitleBar, Page } from '@dynatrace/strato-components/layouts';
 import { Button } from '@dynatrace/strato-components/buttons';
 import { Breadcrumbs } from '@dynatrace/strato-components/navigation';
-import {
-  FavoriteIcon,
-  InformationIcon,
-  RefreshIcon,
-  UnfavoriteIcon,
-  XmarkIcon,
-} from '@dynatrace/strato-icons';
 
 interface BreadcrumbItem {
   label: string;
@@ -19,34 +12,37 @@ interface ActionButton {
   icon: React.ReactNode;
   label?: string;
   onClick: () => void;
-  variant?: 'default' | 'primary';
+  // CORRECCIÓN: Reemplazamos 'primary' por las variantes correctas de Strato
+  variant?: 'default' | 'emphasized' | 'accent'; 
 }
 
 interface TitleBarProps {
   title: string;
   subtitle?: string;
   breadcrumbs?: BreadcrumbItem[];
-  hasPrefix?: boolean;
-  onPrefixClick?: () => void;
   actionButtons?: ActionButton[];
-  hasAction?: boolean;
-  onActionClick?: () => void;
-  prefixIcon?: React.ReactNode;
+  hasSidebarToggle?: boolean; // Controla si mostramos el botón del panel izquierdo
+  hasDetailViewToggle?: boolean; // Controla si mostramos el botón del panel derecho
 }
 
 const TitleBar: React.FC<TitleBarProps> = ({
   title,
   subtitle,
   breadcrumbs,
-  hasPrefix = false,
-  onPrefixClick,
   actionButtons = [],
-  hasAction = false,
-  onActionClick,
-  prefixIcon,
+  hasSidebarToggle = false,
+  hasDetailViewToggle = false,
 }) => {
   return (
     <StratoTitleBar>
+      {/* Botón para abrir el panel IZQUIERDO (Sidebar) */}
+      {hasSidebarToggle && (
+        <StratoTitleBar.Prefix>
+          <Page.PanelControlButton target="sidebar" />
+        </StratoTitleBar.Prefix>
+      )}
+
+      {/* Migas de pan */}
       {breadcrumbs && breadcrumbs.length > 0 && (
         <StratoTitleBar.Navigation>
           <Breadcrumbs>
@@ -59,36 +55,19 @@ const TitleBar: React.FC<TitleBarProps> = ({
         </StratoTitleBar.Navigation>
       )}
 
-      {hasAction && (
-        <StratoTitleBar.Action>
-          <Button variant="default" onClick={onActionClick}>
-            <Button.Prefix>
-              <XmarkIcon />
-            </Button.Prefix>
-          </Button>
-        </StratoTitleBar.Action>
-      )}
-
-      {hasPrefix && (
-        <StratoTitleBar.Prefix>
-          <Page.PanelControlButton
-            target="sidebar"
-            onClick={onPrefixClick}
-          />
-        </StratoTitleBar.Prefix>
-      )}
-
+      {/* Título y Subtítulo */}
       <StratoTitleBar.Title>{title}</StratoTitleBar.Title>
-
       {subtitle && <StratoTitleBar.Subtitle>{subtitle}</StratoTitleBar.Subtitle>}
 
+      {/* Botones de acción personalizados */}
       {actionButtons.length > 0 && (
         <StratoTitleBar.Suffix>
           <div style={{ display: 'flex', gap: '8px' }}>
             {actionButtons.map((btn, index) => (
               <Button
                 key={index}
-                variant={btn.variant || 'default'}
+                // Así es como pasas la variable. Si btn.variant no existe, usa 'default'
+                variant={btn.variant || 'default'} 
                 onClick={btn.onClick}
               >
                 <Button.Prefix>{btn.icon}</Button.Prefix>
@@ -97,6 +76,13 @@ const TitleBar: React.FC<TitleBarProps> = ({
             ))}
           </div>
         </StratoTitleBar.Suffix>
+      )}
+
+      {/* Botón para abrir el panel DERECHO (DetailView) */}
+      {hasDetailViewToggle && (
+        <StratoTitleBar.Action>
+          <Page.PanelControlButton target="detailView" />
+        </StratoTitleBar.Action>
       )}
     </StratoTitleBar>
   );
