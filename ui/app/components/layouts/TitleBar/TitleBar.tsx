@@ -81,7 +81,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
       {/* Botón para abrir el panel DERECHO (DetailView) */}
       {hasDetailViewToggle && (
         <StratoTitleBar.Action>
-          <Page.PanelControlButton target="detailView" />
+          <Page.PanelControlButton target="details" />
         </StratoTitleBar.Action>
       )}
     </StratoTitleBar>

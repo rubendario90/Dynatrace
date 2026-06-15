@@ -1,30 +1,26 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { IntentButton } from '@dynatrace/strato-components/buttons';
+import { IntentPayload } from '@dynatrace-sdk/navigation';
 
-// 1. Importamos tus componentes sin las llaves {} porque usan "export default"
+// 1. Importamos tus componentes
 import PageLayout from "./components/layouts/PageLayout/PageLayout";
 
-// 2. Importamos tus páginas (Asumiendo que estas sí usan "export const")
+// 2. Importamos tus páginas 
 import { DashboardPage } from "./pages/DashboardPage";
-import {AnalyticsPage} from "./pages/AnalyticsPage";
-import {SettingsPage} from "./pages/SettingsPage";
+import { AnalyticsPage } from "./pages/AnalyticsPage";
+import { SettingsPage } from "./pages/SettingsPage";
 
 export const App = () => {
-  // Configuramos el menú de navegación para tu Header
-  const navItems = [
-    { href: "/", label: "Dashboard" },
-    { href: "/analytics", label: "Analytics" },
-    { href: "/settings", label: "Settings" }
-  ];
 
   return (
     <PageLayout
       appName="Mi App Dynatrace"
-      navigationItems={navItems}
+      navigationItems={[]}
       mainTitle="Vista Principal"
       mainSubtitle="Gestiona tus métricas aquí"
     >
-      {/* Todo lo que pongamos aquí adentro, PageLayout lo pondrá en la sección "mainContent" */}
+      {/* Las rutas se mantienen igual */}
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />

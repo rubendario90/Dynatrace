@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Page, TitleBar as StratoTitleBar } from '@dynatrace/strato-components/layouts';
-import AppHeader from '../AppHeader/AppHeader'; // Tu AppHeader personalizado
-import TitleBar from '../TitleBar/TitleBar'; // Tu TitleBar personalizado (lo usaremos para el Main)
+import AppHeader from '../AppHeader/AppHeader'; 
+import TitleBar from '../TitleBar/TitleBar'; 
 import Borders from '@dynatrace/strato-design-tokens/borders';
 import Colors from '@dynatrace/strato-design-tokens/colors';
 import Spacings from '@dynatrace/strato-design-tokens/spacings';
@@ -22,18 +22,20 @@ const Placeholder = () => (
 interface PageLayoutProps {
   appName?: string;
   navigationItems?: Array<{ href: string; label: string }>;
+  headerActions?: ReactNode; 
   mainTitle: string;
   mainSubtitle?: string;
   children?: ReactNode;
   sidebarContent?: ReactNode;
   detailViewContent?: ReactNode;
   onSettingsClick?: () => void;
-  helpMenuConfig?: any;
+  helpMenuConfig?: Record<string, string>;
 }
 
 const PageLayout: React.FC<PageLayoutProps> = ({
   appName = 'MyApp',
   navigationItems = [],
+  headerActions, 
   mainTitle,
   mainSubtitle,
   children,
@@ -44,49 +46,46 @@ const PageLayout: React.FC<PageLayoutProps> = ({
 }) => {
   return (
     <Page>
-      {/* HEADER */}
       <Page.Header>
         <AppHeader
           appName={appName}
           navigationItems={navigationItems}
+          headerActions={headerActions} 
           onSettingsClick={onSettingsClick}
           helpMenuConfig={helpMenuConfig}
         />
       </Page.Header>
 
-      {/* SIDEBAR (Panel Izquierdo) */}
       <Page.Sidebar>
         <StratoTitleBar>
-          <StratoTitleBar.Title>Sidebar</StratoTitleBar.Title>
-          <StratoTitleBar.Subtitle>e.g. for navigation</StratoTitleBar.Subtitle>
+          <StratoTitleBar.Title>Filtros</StratoTitleBar.Title>
+          <StratoTitleBar.Subtitle>Selecciona las métricas necesarias</StratoTitleBar.Subtitle>
           <StratoTitleBar.Action>
-             {/* Este botón cierra el sidebar */}
             <Page.PanelControlButton />
           </StratoTitleBar.Action>
         </StratoTitleBar>
-        {sidebarContent || <Placeholder />}
+        
+        {/* Aquí es donde React inyectará automáticamente tu <MenuMetricas /> 
+            porque se lo pasamos desde App.tsx */}
+        {sidebarContent}
+        
       </Page.Sidebar>
 
-      {/* MAIN (Contenido Central) */}
       <Page.Main style={{ display: 'flex', flexDirection: 'column' }}>
-         {/* Usamos tu TitleBar personalizado aquí */}
         <TitleBar
           title={mainTitle}
           subtitle={mainSubtitle}
-          hasSidebarToggle={true} // Nueva prop que agregaremos a tu TitleBar
-          hasDetailViewToggle={true} // Nueva prop para abrir el panel derecho si lo necesitas
+          hasSidebarToggle={true} 
+          hasDetailViewToggle={true} 
         />
-        {/* Aquí es donde entran las rutas de App.tsx */}
         {children || <Placeholder />}
       </Page.Main>
 
-      {/* DETAIL VIEW (Panel Derecho - Settings) */}
       <Page.DetailView style={{ display: 'flex', flexDirection: 'column' }}>
         <StratoTitleBar>
           <StratoTitleBar.Title>Settings</StratoTitleBar.Title>
           <StratoTitleBar.Subtitle>For content related to the main area</StratoTitleBar.Subtitle>
           <StratoTitleBar.Action>
-            {/* Este botón cierra el panel derecho */}
             <Page.PanelControlButton />
           </StratoTitleBar.Action>
         </StratoTitleBar>
