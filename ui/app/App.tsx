@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import PageLayout from "./components/layouts/PageLayout/PageLayout";
 
 // 2. Importamos tus páginas (Asumiendo que estas sí usan "export const")
-import {DashboardPage} from "./pages/DashboardPage";
+import { DashboardPage } from "./pages/DashboardPage";
 import {AnalyticsPage} from "./pages/AnalyticsPage";
 import {SettingsPage} from "./pages/SettingsPage";
 

@@ -2,14 +2,11 @@ import React from "react";
 import { Flex } from "@dynatrace/strato-components/layouts";
 import { Heading, Paragraph } from "@dynatrace/strato-components/typography";
 
-export const DashboardPage = () => {
+export const AnalyticsPage = () => {
   return (
     <Flex flexDirection="column" gap={16} padding={16}>
-      <Heading level={3}>Welcome to Dashboard</Heading>
-      <Paragraph>Your main content goes here.</Paragraph>
-      
-      {/* Aquí en el futuro pondrás tus gráficas, tablas y botones reales */}
-      
+      <Heading level={3}>Analytics</Heading>
+      <Paragraph>Aquí irá tu análisis de datos.</Paragraph>
     </Flex>
   );
 };
