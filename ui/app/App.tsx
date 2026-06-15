@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react"; // <-- Importante: necesitamos useState
 import { Route, Routes } from "react-router-dom";
-import { IntentButton } from '@dynatrace/strato-components/buttons';
-import { IntentPayload } from '@dynatrace-sdk/navigation';
 
 // 1. Importamos tus componentes
 import PageLayout from "./components/layouts/PageLayout/PageLayout";
@@ -11,7 +9,13 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
 import { SettingsPage } from "./pages/SettingsPage";
 
+// IMPORTANTE: Verifica que esta ruta coincida exactamente con donde guardaste el archivo
+import { MenuMetricas } from "./components/layouts/MenuMetricas/MenuMetricas";
+
 export const App = () => {
+  // === EL CEREBRO ===
+  // Aquí guardamos qué métrica seleccionó el usuario (CPU, MEMORIA, etc.)
+  const [metric, setMetric] = useState<string>('');
 
   return (
     <PageLayout
@@ -19,10 +23,16 @@ export const App = () => {
       navigationItems={[]}
       mainTitle="Vista Principal"
       mainSubtitle="Gestiona tus métricas aquí"
+      
+      // === EL MENÚ LATERAL ===
+      // Se lo pasamos al Layout, y le decimos que cuando alguien haga clic,
+      // actualice nuestra variable 'metric' usando 'setMetric'
+      sidebarContent={<MenuMetricas onSelectMetric={setMetric} />}
     >
-      {/* Las rutas se mantienen igual */}
+      {/* === LAS PÁGINAS CENTRALES === */}
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
+        {/* Le enviamos la métrica seleccionada a tu Dashboard para que dibuje la gráfica */}
+        <Route path="/" element={<DashboardPage selectedMetric={metric} />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
